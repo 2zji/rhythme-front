@@ -74,3 +74,9 @@
   cursor: pointer;
   text-decoration: underline;
 }
+
+.success-text {
+  color: green;
+  font-weight: bold;
+  white-space: pre-wrap; /* \n 줄바꿈 적용 */
+}

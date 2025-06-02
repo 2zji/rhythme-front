@@ -17,3 +17,8 @@
     font-size: 1.3rem; /* 텍스트 크기도 반응형 */
     color: white;
 }
+
+.home-link {
+  text-decoration: none;
+  color: inherit;
+}
