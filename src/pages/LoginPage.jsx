@@ -16,20 +16,16 @@ const LoginPage = () => {
     }
 
     try {
-      const response = await axios.post('/api/login', {
+      await axios.post('/api/login', {
         username,
         password,
-      }, { withCredentials: true }); // ✅ 세션 사용 시 필요
+      }, { withCredentials: true });
 
-      console.log('✅ 로그인 성공:', response.data);
+      localStorage.setItem('username', username); // username만 저장
       setSuccessMsg('로그인 성공!');
-      setErrorMsg('');
-
-      // 예: 홈으로 이동
-      // window.location.href = '/home';
-
+      window.location.href = '/Index';
     } catch (error) {
-      console.error('❌ 로그인 실패:', error);
+      console.error('로그인 실패:', error);
       setErrorMsg('아이디 또는 비밀번호가 올바르지 않습니다.');
       setSuccessMsg('');
     }

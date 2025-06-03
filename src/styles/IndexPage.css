@@ -1,0 +1,105 @@
+.index-container {
+  padding: 0 20px 40px;
+  max-width: 700px;
+  margin: auto;
+}
+
+/* 섹션 구조: 제목은 왼쪽, 내용은 가운데 */
+.song-section,
+.ranking-section,
+.word-section {
+  margin: 30px 0;
+}
+
+/* 섹션 제목들 왼쪽 정렬 */
+.song-section h2,
+.ranking-section h2,
+.word-section h2 {
+  text-align: left;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+/* 섹션 내부 요소 가운데 정렬용 wrapper */
+.section-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 버튼 스타일 */
+.primary-button {
+  margin-top: 14px;
+  padding: 10px 24px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+.primary-button:hover {
+  background-color: #2563eb;
+}
+
+/* 랭킹 테이블 */
+.ranking-table {
+  width: 100%;
+  max-width: 500px;
+  border-collapse: collapse;
+  margin: 16px 0;
+}
+
+.ranking-table th,
+.ranking-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.ranking-table tr:nth-child(2) {
+  background-color: #d1eaff;
+  font-weight: bold;
+}
+
+/* 단어 카드 */
+.word-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.word-card {
+  background-color: #f1f1f1;
+  padding: 12px 10px;
+  border-radius: 10px;
+  width: 100px;
+  text-align: center;
+  font-size: 0.95rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+/* 로그아웃 버튼 */
+.logout-button {
+  width: 100%;
+  max-width: 500px;
+  padding: 12px;
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.95rem;
+  margin: 40px auto 0;
+}
+
+.logout-button:hover {
+  background-color: #dc2626;
+}
