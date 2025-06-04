@@ -1,0 +1,37 @@
+
+
+/* 나의 랭킹 섹션 */
+.ranking-section {
+  margin: 30px 0;
+  text-align: center;
+}
+
+/* 섹션 제목 왼쪽 정렬 */
+.ranking-section h3 {
+  text-align: left;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+/* 랭킹 테이블 */
+.ranking-table {
+  width: 100%;
+  max-width: 500px;
+  border-collapse: collapse;
+  margin: 16px auto; /* 테이블 자체를 중앙 정렬 */
+}
+
+.ranking-table th,
+.ranking-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.ranking-table tr:nth-child(2) {
+  background-color: #d1eaff;
+  font-weight: bold;
+}
+

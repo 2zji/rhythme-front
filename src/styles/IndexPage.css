@@ -1,3 +1,5 @@
+/* src/styles/IndexPage.css */
+
 .index-container {
   padding: 0 20px 40px;
   max-width: 700px;
@@ -6,17 +8,18 @@
 
 /* 섹션 구조: 제목은 왼쪽, 내용은 가운데 */
 .song-section,
-.ranking-section,
+/* .ranking-section, <--- 이 부분을 제거합니다. */
 .word-section {
   margin: 30px 0;
+  /* text-align: center; <--- 이 부분을 제거합니다. */
 }
 
 /* 섹션 제목들 왼쪽 정렬 */
 .song-section h2,
-.ranking-section h2,
+/* .ranking-section h2, <--- 이 부분을 제거합니다. */
 .word-section h2 {
-  text-align: left;
-  font-size: 1.2rem;
+  text-align: left; /* 제목은 명시적으로 왼쪽 정렬 */
+  font-size: 1.3rem;
   font-weight: bold;
   margin-bottom: 12px;
 }
@@ -26,13 +29,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
-/* 버튼 스타일 */
+/* 버튼 스타일 (primary-button은 여러 곳에서 사용되므로 IndexPage.css에 유지) */
 .primary-button {
   margin-top: 14px;
-  padding: 10px 24px;
-  background-color: #3b82f6;
+  padding: 10px 36px;
+  background-color: #6283A2;
   color: white;
   border: none;
   border-radius: 8px;
@@ -45,26 +49,12 @@
   background-color: #2563eb;
 }
 
-/* 랭킹 테이블 */
-.ranking-table {
-  width: 100%;
-  max-width: 500px;
-  border-collapse: collapse;
-  margin: 16px 0;
-}
-
-.ranking-table th,
-.ranking-table td {
-  border: 1px solid #ccc;
-  padding: 10px;
-  text-align: center;
-  font-size: 0.95rem;
-}
-
-.ranking-table tr:nth-child(2) {
-  background-color: #d1eaff;
-  font-weight: bold;
-}
+/* 랭킹 테이블 관련 스타일은 MyRankingSection.css로 이동했으므로 제거 */
+/*
+.ranking-table { ... }
+.ranking-table th, .ranking-table td { ... }
+.ranking-table tr:nth-child(2) { ... }
+*/
 
 /* 단어 카드 */
 .word-grid {
