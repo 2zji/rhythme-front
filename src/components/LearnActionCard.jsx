@@ -1,39 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/LearnActionCard.css';
 
-// 목업 데이터 (userId와 songId에 상관없이 동일한 데이터 반환)
-const mockStatusData = {
-  vocabProgress: 65,
-  testStatus: '완료',
-};
+const LearnActionCard = ({ status, songId, onStartVocab, onStartTest, onViewWordbook }) => {
+  const navigate = useNavigate();
 
-const LearnActionCard = ({ userId, songId, onStartVocab, onStartTest, onViewWordbook }) => {
-  const [status, setStatus] = useState(null);
-
-  useEffect(() => {
-    // 목업 데이터 세팅
-    if (userId && songId) {
-      setStatus(mockStatusData);
-    } else {
-      setStatus(null);
-    }
-
-    /*
-    // 실제 API 호출 (나중에 주석 해제해서 사용)
-    const fetchLearnStatus = async () => {
-      try {
-        const res = await axios.get(`/api/users/${userId}/songs/${songId}/learn-status`);
-        setStatus(res.data);
-      } catch (err) {
-        console.error('학습 상태 가져오기 실패:', err);
-      }
-    };
-
-    if (userId && songId) {
-      fetchLearnStatus();
-    }
-    */
-  }, [userId, songId]);
+  const handleStartVocab = () => {
+    navigate(`/learn/quiz/${songId}`);
+  };
 
   if (!status) return null;
 
@@ -41,7 +14,7 @@ const LearnActionCard = ({ userId, songId, onStartVocab, onStartTest, onViewWord
     <div className="learn-card">
       <h3>학습하기</h3>
 
-      <button className="learn-button" onClick={onStartVocab}>
+      <button className="learn-button" onClick={handleStartVocab}>
         단어 학습
         <div className="progress-bar">
           <div className="progress" style={{ width: `${status.vocabProgress}%` }} />

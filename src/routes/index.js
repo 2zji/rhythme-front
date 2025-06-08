@@ -5,6 +5,7 @@ import LoginPage from '../pages/LoginPage';
 import IndexPage from '../pages/IndexPage';
 import AllSongsPage from '../pages/AllSongsPage';
 import SongLearnPage from '../pages/SongLearnPage';
+import VocabQuizPage from '../pages/VocabQuizPage';
 
 const AppRoutes = () => (
   <Routes>
@@ -14,6 +15,7 @@ const AppRoutes = () => (
     <Route path="/Index" element={<IndexPage />} />
     <Route path="/Songs" element={<AllSongsPage />} />
     <Route path="/learn/:songId" element={<SongLearnPage />} />
+    <Route path="/learn/quiz/:songId" element={<VocabQuizPage />} />
   </Routes>
 );
 
