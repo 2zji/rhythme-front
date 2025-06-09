@@ -1,0 +1,55 @@
+/* src/styles/LearnTopBanner.css */
+
+.learn-banner {
+  position: relative;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+}
+
+.learn-banner-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 12px;
+  width: 100%;
+}
+
+.song-text h1 {
+  font-size: 32px;
+  margin: 0;
+}
+
+.song-text h3 {
+  font-size: 18px;
+  margin: 5px 0 10px;
+}
+
+.progress-bar-container {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.progress-bar {
+  width: 80%;
+  height: 10px;
+  background-color: #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  background-color: #58a4ff;
+  transition: width 0.5s ease;
+}
+
+.progress-text {
+  font-size: 14px;
+}

@@ -1,16 +1,15 @@
-// src/components/MyRankingSection.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // useNavigate import
+import { useNavigate } from 'react-router-dom';
+import '../styles/MyRankingSection.css';
 
 const MyRankingSection = ({ userId }) => {
   const [loadingRanking, setLoadingRanking] = useState(true);
   const [rankingData, setRankingData] = useState(null);
 
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // userId가 없으면 랭킹 데이터를 가져오지 않음
     if (!userId) {
       setLoadingRanking(false);
       return;
@@ -20,7 +19,11 @@ const MyRankingSection = ({ userId }) => {
       try {
         setLoadingRanking(true);
         const response = await axios.get(`/api/users/${userId}/ranking`);
-        setRankingData(response.data);
+        if (response.data && Object.keys(response.data).length > 0) {
+          setRankingData(response.data);
+        } else {
+          setRankingData(null);
+        }
       } catch (error) {
         console.error('Error fetching ranking data:', error);
         setRankingData(null);
@@ -30,11 +33,10 @@ const MyRankingSection = ({ userId }) => {
     };
 
     fetchRankingData();
-  }, [userId]); // userId가 변경될 때마다 데이터를 다시 가져오도록 의존성 추가
+  }, [userId]);
 
   const handleGoToRankingPage = () => {
-    // 랭킹 페이지로 이동하는 로직 (예: /ranking 경로)
-    navigate('/ranking'); // 실제 랭킹 페이지 경로에 맞춰 수정하세요
+    navigate('/ranking');
   };
 
   return (
@@ -42,26 +44,32 @@ const MyRankingSection = ({ userId }) => {
       <h3>나의 랭킹</h3>
       {loadingRanking ? (
         <p>랭킹 정보를 불러오는 중입니다...</p>
+      ) : rankingData ? (
+        <div className="ranking-card">
+          <div className="ranking-title">🎵 {rankingData.songTitle || 'Song Title'}</div>
+          <table className="ranking-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>ID</th>
+                <th>Score</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{rankingData.rank}</td>
+                <td>{userId}</td>
+                <td>{rankingData.score}</td>
+                <td>{rankingData.time}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       ) : (
-        <table className="ranking-table">
-          <thead>
-            <tr>
-              <th>Rank</th>
-              <th>ID</th>
-              <th>Score</th>
-              <th>Time</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{rankingData ? rankingData.rank : 'N/A'}</td>
-              <td>{userId}</td>
-              <td>{rankingData ? rankingData.score : 'N/A'}</td>
-              <td>{rankingData ? rankingData.time : 'N/A'}</td>
-            </tr>
-          </tbody>
-        </table>
+        <p className="no-ranking">테스트 내역이 없습니다.</p>
       )}
+
       <button className="primary-button" onClick={handleGoToRankingPage}>
         랭킹장 바로가기
       </button>

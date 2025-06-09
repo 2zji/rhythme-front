@@ -1,41 +1,53 @@
 .song-card {
   display: flex;
   align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 12px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
   padding: 12px;
-  margin-bottom: 16px;
+  transition: box-shadow 0.2s ease-in-out;
 }
 
+.song-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 앨범 커버 */
 .song-image {
   width: 80px;
   height: 80px;
-  border-radius: 6px;
+  border-radius: 8px;
   object-fit: cover;
   margin-right: 16px;
 }
 
 .song-info {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .song-title {
-  font-size: 1.2rem;
+  font-size: 18px;
   font-weight: bold;
+  color: #333;
 }
 
 .song-artist {
-  margin: 4px 0;
-  color: #666;
+  font-size: 14px;
+  color: #777;
+  margin-top: 2px;
 }
 
+/* 진행도 바 */
 .progress-bar-container {
   width: 100%;
   height: 6px;
   background-color: #eee;
   border-radius: 4px;
   overflow: hidden;
-  margin: 6px 0;
+  margin-top: 10px;
 }
 
 .progress-bar-fill {
@@ -44,7 +56,8 @@
 }
 
 .progress-text {
-  font-size: 0.9rem;
+  font-size: 12px;
   color: #888;
   text-align: right;
+  margin-top: 4px;
 }

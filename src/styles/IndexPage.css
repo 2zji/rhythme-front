@@ -88,6 +88,7 @@
   font-weight: bold;
   font-size: 0.95rem;
   margin: 40px auto 0;
+  text-again: center;
 }
 
 .logout-button:hover {
