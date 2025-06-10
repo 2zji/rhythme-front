@@ -12,7 +12,6 @@ const AllSongsPage = () => {
 
   useEffect(() => {
     // API 호출 함수
-    /*
     const fetchAllSongs = async () => {
       try {
         setLoading(true);
@@ -32,10 +31,11 @@ const AllSongsPage = () => {
     };
 
     fetchAllSongs();
-    */
+  }, []);
+
 
     // 임시 mock 데이터
-    const mockSongs = [
+    /* const mockSongs = [
       {
         song_id: 1,
         title: 'Mock Song 1',
@@ -54,7 +54,7 @@ const AllSongsPage = () => {
 
     setAllSongs(mockSongs);
     setLoading(false);
-  }, []);
+  }, []); */
 
   return (
     <div className="all-songs-container">
