@@ -26,6 +26,7 @@ const SongCard = ({ title, artist, imageUrl, progress, songId }) => {
 
   const handleClick = () => {
     navigate(`/learn/${songId}`);
+    console.log("songId in SongCard:", songId);
   };
 
   const getImage = (filename) => {
