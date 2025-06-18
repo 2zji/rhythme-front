@@ -1,29 +1,50 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import '../styles/WordsSection.css';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "../styles/WordsSection.css";
 
-const WordsSection = ({ userId }) => {
+const WordsSection = ({ username }) => {
   const [loadingWords, setLoadingWords] = useState(true);
   const [recentWords, setRecentWords] = useState([]);
+  const [flipped, setFlipped] = useState([]);
 
   useEffect(() => {
-    if (!userId) return;
+    if (!username) return;
 
     const fetchRecentWords = async () => {
       try {
         setLoadingWords(true);
-        const response = await axios.get(`/api/users/${userId}/recent-words`);
-        setRecentWords(response.data);
+
+        // 1. 최신 학습한 노래 정보 가져오기
+        const songRes = await axios.get(`/api/users/${username}/latest-song`);
+        const songId = songRes.data.songId;
+        console.log(songId);
+
+        // 2. 해당 노래의 단어장 불러오기
+        const wordRes = await axios.get(`/api/vocab-quiz/${songId}`);
+        const wordList = wordRes.data.map((item) => ({
+          en: item.correct_word,
+          ko: item.meaning,
+        }));
+
+        setRecentWords(wordList);
+        setFlipped(Array(wordList.length).fill(false));
       } catch (error) {
-        console.error('Error fetching recent words:', error);
+        console.error("최근 단어 불러오기 실패:", error);
         setRecentWords([]);
+        setFlipped([]);
       } finally {
         setLoadingWords(false);
       }
     };
 
     fetchRecentWords();
-  }, [userId]);
+  }, [username]);
+
+  const handleFlip = (index) => {
+    const newFlipped = [...flipped];
+    newFlipped[index] = !newFlipped[index];
+    setFlipped(newFlipped);
+  };
 
   return (
     <section className="word-section">
@@ -33,8 +54,12 @@ const WordsSection = ({ userId }) => {
       ) : recentWords.length > 0 ? (
         <div className="word-grid">
           {recentWords.map((word, index) => (
-            <div className="word-card" key={index}>
-              {word}
+            <div
+              key={index}
+              className={`word-card ${flipped[index] ? "flipped" : ""}`}
+              onClick={() => handleFlip(index)}
+            >
+              {flipped[index] ? word.ko : word.en}
             </div>
           ))}
         </div>
