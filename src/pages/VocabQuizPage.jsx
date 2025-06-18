@@ -21,8 +21,14 @@ const VocabQuizPage = () => {
   const [showAutoNextMsg, setShowAutoNextMsg] = useState(false);
   const [correctCount, setCorrectCount] = useState(0);
   const [startTime, setStartTime] = useState(null);
+  const [userId, setUserId] = useState(null);
 
   const audioRef = useRef(null);
+
+  useEffect(() => {
+    const storedId = localStorage.getItem('userId');
+    setUserId(storedId);
+  }, []);
 
   useEffect(() => {
     const fetchQuizDataWithSegments = async () => {
@@ -76,14 +82,12 @@ const VocabQuizPage = () => {
     }
   }, [quizIndex, isCompleted]);
 
-  // ✅ 핵심 수정: 보기 4개 유지, 중복 제거, 부족 시 랜덤 단어 보충
   useEffect(() => {
     if (quizData.length === 0 || quizIndex >= quizData.length) return;
 
     const data = quizData[quizIndex];
     const correct = data.correct_word;
 
-    // 정답과 중복 제거 + 오답 중복 제거
     let filtered = (randomChoices || []).filter(w => w !== correct);
     filtered = Array.from(new Set(filtered));
 
@@ -102,14 +106,12 @@ const VocabQuizPage = () => {
     const setupChoices = async () => {
       let finalChoices = [...filtered];
 
-      // 부족하면 채우기
       if (finalChoices.length < 3) {
         const needed = 3 - finalChoices.length;
         const extra = await fetchExtraChoices(needed);
         finalChoices = [...finalChoices, ...extra];
       }
 
-      // 최대 3개 오답 + 정답
       const choicesSet = [...finalChoices.slice(0, 3), correct];
       const shuffled = choicesSet.sort(() => Math.random() - 0.5);
 
@@ -166,6 +168,24 @@ const VocabQuizPage = () => {
     };
   }, [quizIndex, quizData]);
 
+  useEffect(() => {
+    const saveLearnedSong = async () => {
+      if (!isCompleted || !userId) return;
+
+      try {
+        console.log('학습 기록 저장', { userId, songId });
+        await axios.post(`/api/users/${userId}/latest-song`, {
+          songId: Number(songId)
+        });
+        console.log('학습 기록 저장 완료');
+      } catch (err) {
+        console.error('학습 기록 저장 실패:', err);
+      }
+    };
+
+    saveLearnedSong();
+  }, [isCompleted, userId, songId]);
+
   const goToNextQuestion = () => {
     setShowAutoNextMsg(false);
     if (quizIndex + 1 < quizData.length) {
@@ -211,10 +231,6 @@ const VocabQuizPage = () => {
     setStartTime(Date.now());
   };
 
-  const goToTest = () => {
-    navigate('/test');
-  };
-
   return (
     <div className="vocab-quiz-container">
       <div className="quiz-box">
@@ -223,7 +239,12 @@ const VocabQuizPage = () => {
             <div className="quiz-header complete">🎉 학습을 완료하였습니다!</div>
             <div className="quiz-result">정답 수: {correctCount} / {quizData.length}</div>
             <button className="retry-btn" onClick={handleRetry}>🔁 다시 학습하기</button>
-            <button className="test-btn" onClick={goToTest}>✅ 단어장 보러가기</button>
+            <button
+              className="test-btn"
+              onClick={() => navigate(`/learn/wordbook/${songId}`, { state: { userId } })}
+            >
+              📘 단어장 보러가기
+            </button>
           </>
         ) : (
           <>

@@ -21,10 +21,7 @@ const LoginPage = () => {
         password,
       }, { withCredentials: true });
 
-      // 서버가 반환한 userId와 username 저장
-      const { userId, username: returnedUsername } = response.data;
-      localStorage.setItem('userId', userId);
-      localStorage.setItem('username', returnedUsername);
+      localStorage.setItem('username', username);
 
       setSuccessMsg('로그인 성공!');
       window.location.href = '/Index';
