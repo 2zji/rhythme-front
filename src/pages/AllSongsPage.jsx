@@ -66,12 +66,10 @@ const AllSongsPage = () => {
           <div className="song-list">
             {allSongs.map((song, index) => (
               <SongCard
-                key={song.song_id || index}
+                songId={song.songId}
                 title={song.title}
                 artist={song.artist}
                 imageUrl={song.imageUrl}
-                progress={song.progress}
-                songId={song.song_id}
               />
             ))}
           </div>

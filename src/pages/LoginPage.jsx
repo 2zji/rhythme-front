@@ -16,12 +16,16 @@ const LoginPage = () => {
     }
 
     try {
-      await axios.post('/api/login', {
+      const response = await axios.post('/api/login', {
         username,
         password,
       }, { withCredentials: true });
 
-      localStorage.setItem('username', username); // username만 저장
+      // 서버가 반환한 userId와 username 저장
+      const { userId, username: returnedUsername } = response.data;
+      localStorage.setItem('userId', userId);
+      localStorage.setItem('username', returnedUsername);
+
       setSuccessMsg('로그인 성공!');
       window.location.href = '/Index';
     } catch (error) {
@@ -30,6 +34,7 @@ const LoginPage = () => {
       setSuccessMsg('');
     }
   };
+
 
   return (
     <div className="main-container">

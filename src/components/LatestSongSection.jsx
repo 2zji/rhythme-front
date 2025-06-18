@@ -48,6 +48,7 @@ const LatestSongSection = ({ userId }) => {
             artist={latestSong.artist}
             imageUrl={latestSong.imageUrl}
             progress={latestSong.progress}
+            songId={latestSong.song_id}  // song_id 맞게 바꿔주기
           />
         ) : (
           <p className="null-text">최근 학습 중인 노래가 없습니다.</p>
