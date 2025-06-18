@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopBanner from '../components/TopBanner';
 import LatestSongSection from '../components/LatestSongSection';
-import MyRankingSection from '../components/MyRankingSection';
 import WordsSection from '../components/WordsSection';
 
 import '../styles/IndexPage.css';
@@ -32,17 +31,8 @@ const IndexPage = () => {
       <button className="primary-button" onClick={handleViewAllSongs}>
         모든 노래 보러가기
       </button>
-      <MyRankingSection userId={userId} />
+
       <WordsSection userId={userId} />
-      <button
-        className="logout-button"
-        onClick={() => {
-          localStorage.removeItem('username');
-          window.location.href = '/';
-        }}
-      >
-        로그아웃
-      </button>
     </div>
   );
 };

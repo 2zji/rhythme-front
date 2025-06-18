@@ -1,11 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import '../styles/LearnActionCard.css';
 
-const LearnActionCard = ({ status, songId, onStartVocab, onStartTest, onViewWordbook }) => {
+const LearnActionCard = ({ status, songId }) => {
   const navigate = useNavigate();
 
   const handleStartVocab = () => {
     navigate(`/learn/quiz/${songId}`);
+  };
+
+  const handleViewWordbook = () => {
+    navigate(`/learn/wordbook/${songId}`);
   };
 
   if (!status) return null;
@@ -16,18 +20,9 @@ const LearnActionCard = ({ status, songId, onStartVocab, onStartTest, onViewWord
 
       <button className="learn-button" onClick={handleStartVocab}>
         단어 학습
-        <div className="progress-bar">
-          <div className="progress" style={{ width: `${status.vocabProgress}%` }} />
-        </div>
-        <span className="progress-text">{status.vocabProgress}%</span>
       </button>
 
-      <button className="learn-button" onClick={onStartTest}>
-        테스트
-        <span className="badge">{status.testStatus}</span>
-      </button>
-
-      <button className="learn-button" onClick={onViewWordbook}>
+      <button className="learn-button" onClick={handleViewWordbook}>
         단어장
       </button>
     </div>

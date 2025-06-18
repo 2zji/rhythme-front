@@ -6,15 +6,12 @@
 
 /* 섹션 구조: 제목은 왼쪽, 내용은 가운데 */
 .song-section,
-/* .ranking-section, <--- 이 부분을 제거합니다. */
 .word-section {
-  margin: 30px 0;
-  /* text-align: center; <--- 이 부분을 제거합니다. */
+  margin: 50px 0;
 }
 
 /* 섹션 제목들 왼쪽 정렬 */
 .song-section h2,
-/* .ranking-section h2, <--- 이 부분을 제거합니다. */
 .word-section h2 {
   text-align: left; /* 제목은 명시적으로 왼쪽 정렬 */
   font-size: 1.3rem;
@@ -30,10 +27,10 @@
   width: 100%;
 }
 
-/* 버튼 스타일 (primary-button은 여러 곳에서 사용되므로 IndexPage.css에 유지) */
+
 .primary-button {
-  margin-top: 14px;
-  padding: 10px 36px;
+  width: 100%;
+  padding: 12px 0;
   background-color: #6283A2;
   color: white;
   border: none;
