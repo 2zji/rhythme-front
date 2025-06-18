@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import '../styles/VocabQuizPage.css';
+import React, { useEffect, useState, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+import "../styles/VocabQuizPage.css";
 
 const VocabQuizPage = () => {
   const { songId } = useParams();
@@ -9,12 +9,12 @@ const VocabQuizPage = () => {
 
   const [quizData, setQuizData] = useState([]);
   const [quizIndex, setQuizIndex] = useState(0);
-  const [question, setQuestion] = useState('');
-  const [correctAnswer, setCorrectAnswer] = useState('');
-  const [correctMeaning, setCorrectMeaning] = useState('');
+  const [question, setQuestion] = useState("");
+  const [correctAnswer, setCorrectAnswer] = useState("");
+  const [correctMeaning, setCorrectMeaning] = useState("");
   const [choices, setChoices] = useState([]);
   const [selected, setSelected] = useState(null);
-  const [feedback, setFeedback] = useState('none');
+  const [feedback, setFeedback] = useState("none");
   const [progress, setProgress] = useState(0);
   const [randomChoices, setRandomChoices] = useState([]);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -22,12 +22,15 @@ const VocabQuizPage = () => {
   const [correctCount, setCorrectCount] = useState(0);
   const [startTime, setStartTime] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [username, setUsername] = useState(null);
 
   const audioRef = useRef(null);
 
   useEffect(() => {
-    const storedId = localStorage.getItem('userId');
+    const storedId = localStorage.getItem("userId");
+    const storedusername = localStorage.getItem("username");
     setUserId(storedId);
+    setUsername(storedusername);
   }, []);
 
   useEffect(() => {
@@ -39,8 +42,8 @@ const VocabQuizPage = () => {
         const enrichedQuiz = await Promise.all(
           quizItems.map(async (item) => {
             try {
-              const segRes = await axios.get('/api/song-words/segment', {
-                params: { songId: songId, wordId: item.wordId }
+              const segRes = await axios.get("/api/song-words/segment", {
+                params: { songId: songId, wordId: item.wordId },
               });
               return {
                 ...item,
@@ -48,7 +51,10 @@ const VocabQuizPage = () => {
                 end_time_sec: segRes.data.endTimeSec,
               };
             } catch (segErr) {
-              console.warn(`구간정보 불러오기 실패 (wordId: ${item.wordId}):`, segErr);
+              console.warn(
+                `구간정보 불러오기 실패 (wordId: ${item.wordId}):`,
+                segErr
+              );
               return {
                 ...item,
                 start_time_sec: 0,
@@ -61,7 +67,7 @@ const VocabQuizPage = () => {
         setQuizData(enrichedQuiz);
         setStartTime(Date.now());
       } catch (err) {
-        console.error('퀴즈 데이터 불러오기 실패:', err);
+        console.error("퀴즈 데이터 불러오기 실패:", err);
       }
     };
 
@@ -71,10 +77,10 @@ const VocabQuizPage = () => {
   useEffect(() => {
     const fetchRandomWords = async () => {
       try {
-        const res = await axios.get('/api/words/group');
-        setRandomChoices(res.data.map(wordObj => wordObj.word));
+        const res = await axios.get("/api/words/group");
+        setRandomChoices(res.data.map((wordObj) => wordObj.word));
       } catch (err) {
-        console.error('랜덤 단어를 불러오는 중 오류 발생:', err);
+        console.error("랜덤 단어를 불러오는 중 오류 발생:", err);
       }
     };
     if (!isCompleted) {
@@ -88,17 +94,18 @@ const VocabQuizPage = () => {
     const data = quizData[quizIndex];
     const correct = data.correct_word;
 
-    let filtered = (randomChoices || []).filter(w => w !== correct);
+    let filtered = (randomChoices || []).filter((w) => w !== correct);
     filtered = Array.from(new Set(filtered));
 
     const fetchExtraChoices = async (neededCount) => {
       try {
-        const res = await axios.get('/api/words/group');
-        const extra = res.data.map(w => w.word)
-          .filter(w => w !== correct && !filtered.includes(w));
+        const res = await axios.get("/api/words/group");
+        const extra = res.data
+          .map((w) => w.word)
+          .filter((w) => w !== correct && !filtered.includes(w));
         return extra.slice(0, neededCount);
       } catch (err) {
-        console.error('추가 단어 불러오기 실패:', err);
+        console.error("추가 단어 불러오기 실패:", err);
         return [];
       }
     };
@@ -120,7 +127,7 @@ const VocabQuizPage = () => {
       setCorrectAnswer(correct);
       setCorrectMeaning(data.meaning);
       setSelected(null);
-      setFeedback('none');
+      setFeedback("none");
       setProgress(Math.floor((quizIndex / quizData.length) * 100));
     };
 
@@ -136,17 +143,17 @@ const VocabQuizPage = () => {
       }, 3000);
 
       const handleKeyDown = (e) => {
-        if (e.code === 'Space') {
+        if (e.code === "Space") {
           clearTimeout(timeout);
           goToNextQuestion();
         }
       };
 
-      window.addEventListener('keydown', handleKeyDown);
+      window.addEventListener("keydown", handleKeyDown);
 
       return () => {
         clearTimeout(timeout);
-        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener("keydown", handleKeyDown);
       };
     }
   }, [selected]);
@@ -162,34 +169,34 @@ const VocabQuizPage = () => {
       }
     };
 
-    audio.addEventListener('timeupdate', handleTimeUpdate);
+    audio.addEventListener("timeupdate", handleTimeUpdate);
     return () => {
-      audio.removeEventListener('timeupdate', handleTimeUpdate);
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
     };
   }, [quizIndex, quizData]);
 
   useEffect(() => {
     const saveLearnedSong = async () => {
-      if (!isCompleted || !userId) return;
+      if (!isCompleted || !username) return;
 
       try {
-        console.log('학습 기록 저장', { userId, songId });
-        await axios.post(`/api/users/${userId}/latest-song`, {
-          songId: Number(songId)
+        console.log("학습 기록 저장", { username, songId });
+        await axios.post(`/api/users/${username}/latest-song`, {
+          songId: Number(songId),
         });
-        console.log('학습 기록 저장 완료');
+        console.log("학습 기록 저장 완료");
       } catch (err) {
-        console.error('학습 기록 저장 실패:', err);
+        console.error("학습 기록 저장 실패:", err);
       }
     };
 
     saveLearnedSong();
-  }, [isCompleted, userId, songId]);
+  }, [isCompleted, username, songId]);
 
   const goToNextQuestion = () => {
     setShowAutoNextMsg(false);
     if (quizIndex + 1 < quizData.length) {
-      setQuizIndex(prev => prev + 1);
+      setQuizIndex((prev) => prev + 1);
     } else {
       setIsCompleted(true);
     }
@@ -201,17 +208,17 @@ const VocabQuizPage = () => {
 
     const isCorrect = word === correctAnswer;
     if (isCorrect) {
-      setCorrectCount(prev => prev + 1);
+      setCorrectCount((prev) => prev + 1);
     }
 
-    setFeedback(isCorrect ? 'correct' : 'wrong');
+    setFeedback(isCorrect ? "correct" : "wrong");
   };
 
   const getButtonClass = (word) => {
-    if (!selected) return 'choice';
-    if (word === correctAnswer) return 'choice correct';
-    if (word === selected) return 'choice wrong';
-    return 'choice';
+    if (!selected) return "choice";
+    if (word === correctAnswer) return "choice correct";
+    if (word === selected) return "choice wrong";
+    return "choice";
   };
 
   const playSound = () => {
@@ -236,12 +243,20 @@ const VocabQuizPage = () => {
       <div className="quiz-box">
         {isCompleted ? (
           <>
-            <div className="quiz-header complete">🎉 학습을 완료하였습니다!</div>
-            <div className="quiz-result">정답 수: {correctCount} / {quizData.length}</div>
-            <button className="retry-btn" onClick={handleRetry}>🔁 다시 학습하기</button>
+            <div className="quiz-header complete">
+              🎉 학습을 완료하였습니다!
+            </div>
+            <div className="quiz-result">
+              정답 수: {correctCount} / {quizData.length}
+            </div>
+            <button className="retry-btn" onClick={handleRetry}>
+              🔁 다시 학습하기
+            </button>
             <button
               className="test-btn"
-              onClick={() => navigate(`/learn/wordbook/${songId}`, { state: { userId } })}
+              onClick={() =>
+                navigate(`/learn/wordbook/${songId}`, { state: { username } })
+              }
             >
               📘 단어장 보러가기
             </button>
@@ -249,13 +264,14 @@ const VocabQuizPage = () => {
         ) : (
           <>
             <div className={`quiz-header ${feedback}`}>
-              {feedback === 'correct' && '정답입니다!'}
-              {feedback === 'wrong' && '오답입니다!'}
+              {feedback === "correct" && "정답입니다!"}
+              {feedback === "wrong" && "오답입니다!"}
             </div>
 
-            {feedback !== 'none' && showAutoNextMsg && (
+            {feedback !== "none" && showAutoNextMsg && (
               <div className="auto-next-msg">
-                3초 후 자동으로 다음 문제로 넘어갑니다... (스페이스바로 즉시 진행 가능)
+                3초 후 자동으로 다음 문제로 넘어갑니다... (스페이스바로 즉시
+                진행 가능)
               </div>
             )}
 
@@ -283,11 +299,16 @@ const VocabQuizPage = () => {
               })}
             </div>
 
-            <button className="sound-btn" onClick={playSound}>🎵 노래 듣기</button>
+            <button className="sound-btn" onClick={playSound}>
+              🎵 노래 듣기
+            </button>
             <audio ref={audioRef} src="/audio/A.mp3" preload="auto" />
 
             <div className="progress-bar">
-              <div className="progress-fill" style={{ width: `${progress}%` }}></div>
+              <div
+                className="progress-fill"
+                style={{ width: `${progress}%` }}
+              ></div>
             </div>
           </>
         )}
