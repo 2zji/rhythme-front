@@ -4,46 +4,92 @@
   background-color: #f8f9fc;
   min-height: 100vh;
   font-family: 'Pretendard', sans-serif;
+  padding: 0 16px;
 }
 
-/* 상단 LearnTopBanner 아래에 올 콘텐츠 영역 */
 .content-grid {
-  display: grid;
-  grid-template-columns: 1fr 300px; /* 왼쪽 콘텐츠 / 오른쪽 사이드바 */
-  gap: 24px;
-  padding: 32px 64px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 32px 0;
+  gap: 48px;
+  flex-wrap: wrap;
 }
 
-/* 학습하기 패널 영역 */
 .learning-panel {
   background: #ffffff;
   border-radius: 16px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
   padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  min-width: 280px;
+  width: 100%;
+  max-width: 360px;
 }
 
-/* 우측 추천 & 속도 슬라이더 영역 */
-.right-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+.learning-panel h3 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 8px;
 }
 
-/* 버튼 등 공용 스타일 */
+.learning-button {
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s ease;
+  border: 1px solid #e0e0e0;
+}
+
+.learning-button:hover {
+  background-color: #e9ecef;
+}
+
+.song-info-box {
+  background-color: #6c757d;
+  color: white;
+  padding: 24px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.song-info-box h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.song-info-box p {
+  font-size: 16px;
+  opacity: 0.85;
+}
+
+.song-progress-bar {
+  height: 4px;
+  background-color: #dee2e6;
+  margin-top: 16px;
+  border-radius: 2px;
+}
+
 .primary-button {
-  background-color: #4478ff;
+  background: linear-gradient(to right, #4facfe, #00f2fe);
   color: white;
   border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
+  padding: 14px 20px;
+  border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease;
+  font-size: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .primary-button:hover {
-  background-color: #305ce0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }

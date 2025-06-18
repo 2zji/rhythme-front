@@ -10,7 +10,7 @@ const LatestSongSection = ({ userId }) => {
 
   useEffect(() => {
     const fetchLatestSong = async () => {
-      if (!userId) { // userId가 없으면 API 호출하지 않음
+      if (!userId) {
         setLoadingSong(false);
         return;
       }
@@ -20,12 +20,14 @@ const LatestSongSection = ({ userId }) => {
         const response = await axios.get(`/api/users/${userId}/latest-song`);
         setLatestSong(response.data);
       } catch (error) {
-        if (axios.isAxiosError(error) && error.response && error.response.status === 204) {
-            console.log("No latest song found for the user.");
-            setLatestSong(null); // 204 No Content 시 null로 설정
-        } else {
-            console.error('Error fetching latest song:', error);
-            setLatestSong(null); // 다른 오류 발생 시 null로 설정
+        if (axios.isAxiosError(error)) {
+          const status = error.response?.status;
+          console.error('Error fetching latest song:', status, error.response?.data);
+          if (status === 404 || status === 204) {
+            setLatestSong(null);
+          } else {
+            setLatestSong(null);
+          }
         }
       } finally {
         setLoadingSong(false);
@@ -33,7 +35,9 @@ const LatestSongSection = ({ userId }) => {
     };
 
     fetchLatestSong();
-  }, [userId]); // userId가 변경될 때마다 다시 호출
+     console.log(">>> userId:", userId);
+  }, [userId]);
+
 
   return (
     <section className="song-section">

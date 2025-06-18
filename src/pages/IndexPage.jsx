@@ -11,13 +11,17 @@ const IndexPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedId = localStorage.getItem('username');
-    if (!storedId) {
+    const username = localStorage.getItem('username');
+    const storedUserId = localStorage.getItem('userId');  // 변수명 일관성 유지
+     console.log('유저정보', { userId, username });
+
+    if (!storedUserId) {
       alert('로그인 후 이용해주세요.');
       window.location.href = '/';
       return;
     }
-    setUserId(storedId);
+
+    setUserId(storedUserId);
   }, []);
 
   const handleViewAllSongs = () => {
@@ -31,7 +35,6 @@ const IndexPage = () => {
       <button className="primary-button" onClick={handleViewAllSongs}>
         모든 노래 보러가기
       </button>
-
       <WordsSection userId={userId} />
     </div>
   );
