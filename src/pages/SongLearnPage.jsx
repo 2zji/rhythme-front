@@ -46,7 +46,6 @@ const SongLearnPage = () => {
             testStatus: songData.testStatus
           }}
           onStartVocab={() => console.log('단어 학습 시작')}
-          onStartTest={() => console.log('테스트 시작')}
           onViewWordbook={() => console.log('단어장 보기')}
         />
       </div>
