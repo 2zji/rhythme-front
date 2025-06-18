@@ -40,7 +40,7 @@ const SongLearnPage = () => {
 
       <div className="content-grid">
         <LearningPanel
-          songId={songData.song_id}  // 백엔드 필드명에 맞춤
+          songId={songData.songId}  // 백엔드 필드명에 맞춤
           status={{
             vocabProgress: songData.vocabProgress,  // 이건 백엔드에 없으면 undefined 가능
             testStatus: songData.testStatus
