@@ -24,7 +24,6 @@ const VocabQuizPage = () => {
 
   const audioRef = useRef(null);
 
-  // 1) 퀴즈 데이터 및 구간 정보 불러오기
   useEffect(() => {
     const fetchQuizDataWithSegments = async () => {
       try {
@@ -63,7 +62,6 @@ const VocabQuizPage = () => {
     fetchQuizDataWithSegments();
   }, [songId]);
 
-  // 2) 랜덤 단어 불러오기
   useEffect(() => {
     const fetchRandomWords = async () => {
       try {
@@ -78,25 +76,55 @@ const VocabQuizPage = () => {
     }
   }, [quizIndex, isCompleted]);
 
-  // 3) 문제 설정
+  // ✅ 핵심 수정: 보기 4개 유지, 중복 제거, 부족 시 랜덤 단어 보충
   useEffect(() => {
     if (quizData.length === 0 || quizIndex >= quizData.length) return;
 
     const data = quizData[quizIndex];
-    const currentChoices = randomChoices || [];
-    const allChoices = [...currentChoices, data.correct_word];
-    const shuffled = allChoices.sort(() => Math.random() - 0.5);
+    const correct = data.correct_word;
 
-    setQuestion(data.sentence);
-    setCorrectAnswer(data.correct_word);
-    setCorrectMeaning(data.meaning);
-    setChoices(shuffled);
-    setSelected(null);
-    setFeedback('none');
-    setProgress(Math.floor((quizIndex / quizData.length) * 100));
+    // 정답과 중복 제거 + 오답 중복 제거
+    let filtered = (randomChoices || []).filter(w => w !== correct);
+    filtered = Array.from(new Set(filtered));
+
+    const fetchExtraChoices = async (neededCount) => {
+      try {
+        const res = await axios.get('/api/words/group');
+        const extra = res.data.map(w => w.word)
+          .filter(w => w !== correct && !filtered.includes(w));
+        return extra.slice(0, neededCount);
+      } catch (err) {
+        console.error('추가 단어 불러오기 실패:', err);
+        return [];
+      }
+    };
+
+    const setupChoices = async () => {
+      let finalChoices = [...filtered];
+
+      // 부족하면 채우기
+      if (finalChoices.length < 3) {
+        const needed = 3 - finalChoices.length;
+        const extra = await fetchExtraChoices(needed);
+        finalChoices = [...finalChoices, ...extra];
+      }
+
+      // 최대 3개 오답 + 정답
+      const choicesSet = [...finalChoices.slice(0, 3), correct];
+      const shuffled = choicesSet.sort(() => Math.random() - 0.5);
+
+      setChoices(shuffled);
+      setQuestion(data.sentence);
+      setCorrectAnswer(correct);
+      setCorrectMeaning(data.meaning);
+      setSelected(null);
+      setFeedback('none');
+      setProgress(Math.floor((quizIndex / quizData.length) * 100));
+    };
+
+    setupChoices();
   }, [quizData, quizIndex, randomChoices]);
 
-  // 4) 자동 다음 문제 이동 + 스페이스바 처리
   useEffect(() => {
     if (selected) {
       setShowAutoNextMsg(true);
@@ -121,7 +149,6 @@ const VocabQuizPage = () => {
     }
   }, [selected]);
 
-  // 5) 랭킹 저장
   useEffect(() => {
     if (isCompleted && startTime) {
       const endTime = Date.now();
@@ -141,7 +168,6 @@ const VocabQuizPage = () => {
     }
   }, [isCompleted]);
 
-  // ✅ 6) 오디오 구간 재생: 끝 지점에서 멈추기
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -159,7 +185,6 @@ const VocabQuizPage = () => {
     };
   }, [quizIndex, quizData]);
 
-  // 다음 문제 이동
   const goToNextQuestion = () => {
     setShowAutoNextMsg(false);
     if (quizIndex + 1 < quizData.length) {
@@ -169,7 +194,6 @@ const VocabQuizPage = () => {
     }
   };
 
-  // 선택지 클릭
   const handleClick = (word) => {
     if (selected) return;
     setSelected(word);
@@ -182,7 +206,6 @@ const VocabQuizPage = () => {
     setFeedback(isCorrect ? 'correct' : 'wrong');
   };
 
-  // 버튼 스타일 설정
   const getButtonClass = (word) => {
     if (!selected) return 'choice';
     if (word === correctAnswer) return 'choice correct';
@@ -190,7 +213,6 @@ const VocabQuizPage = () => {
     return 'choice';
   };
 
-  // ✅ 구간 재생 버튼
   const playSound = () => {
     if (!audioRef.current) return;
     if (quizData.length === 0 || quizIndex >= quizData.length) return;
@@ -201,7 +223,6 @@ const VocabQuizPage = () => {
     audio.play();
   };
 
-  // 다시 학습
   const handleRetry = () => {
     setQuizIndex(0);
     setCorrectCount(0);
@@ -209,7 +230,6 @@ const VocabQuizPage = () => {
     setStartTime(Date.now());
   };
 
-  // 단어장으로 이동
   const goToTest = () => {
     navigate('/test');
   };

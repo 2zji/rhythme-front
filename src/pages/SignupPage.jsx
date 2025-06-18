@@ -26,11 +26,17 @@ const SignupPage = () => {
       return;
     }
 
+/*수정*/
     try {
-      const response = await axios.post('/api/sign_up', {
-        username,
-        password,
-      });
+     const response = await axios.post(
+       '/api/sign_up',
+       { username, password },
+       {
+         headers: {
+           'Content-Type': 'application/json'
+         }
+       }
+     );
 
       console.log('✅ 회원가입 성공:', response.data);
       setSuccessMsg(response.data);  // 서버 메시지 저장
