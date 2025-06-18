@@ -150,25 +150,6 @@ const VocabQuizPage = () => {
   }, [selected]);
 
   useEffect(() => {
-    if (isCompleted && startTime) {
-      const endTime = Date.now();
-      const elapsed = new Date(endTime - startTime);
-      const formattedTime = elapsed.toISOString().substring(11, 19);
-
-      const rankingData = {
-        userId: 1, // TODO: 실제 유저 ID로 교체
-        songId: parseInt(songId),
-        score: correctCount,
-        playTime: formattedTime,
-      };
-
-      axios.post('/api/save', rankingData)
-        .then(() => console.log('랭킹 저장 성공'))
-        .catch(err => console.error('랭킹 저장 실패:', err));
-    }
-  }, [isCompleted]);
-
-  useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
