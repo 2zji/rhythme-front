@@ -23,8 +23,11 @@ const VocabQuizPage = () => {
   const [startTime, setStartTime] = useState(null);
   const [userId, setUserId] = useState(null);
   const [username, setUsername] = useState(null);
+  const [audioFile, setAudioFile] = useState("");
+  const [audioSrc, setAudioSrc] = useState("");
 
   const audioRef = useRef(null);
+
 
   useEffect(() => {
     const storedId = localStorage.getItem("userId");
@@ -38,6 +41,18 @@ const VocabQuizPage = () => {
       try {
         const quizRes = await axios.get(`/api/vocab-quiz/${songId}`);
         const quizItems = quizRes.data;
+
+        let newAudioSrc = "";
+        if (songId === '1') {
+          newAudioSrc = "/audio/A.mp3";
+        } else if (songId === "3") {
+          newAudioSrc = "/audio/AntiHero.mp3";
+        } else if (songId === "2") {
+          newAudioSrc = "/audio/Pink.mp3";
+        } else {
+          newAudioSrc = "/audio/default.mp3"; // 예외 처리용
+        }
+        setAudioSrc(newAudioSrc);
 
         const enrichedQuiz = await Promise.all(
           quizItems.map(async (item) => {
@@ -302,7 +317,7 @@ const VocabQuizPage = () => {
             <button className="sound-btn" onClick={playSound}>
               🎵 노래 듣기
             </button>
-            <audio ref={audioRef} src="/audio/A.mp3" preload="auto" />
+            <audio ref={audioRef} src={audioSrc} preload="auto" />
 
             <div className="progress-bar">
               <div

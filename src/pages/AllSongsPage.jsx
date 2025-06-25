@@ -18,6 +18,12 @@ const AllSongsPage = () => {
           if (song.title === "What Makes You Beautiful") {
             imageUrl = "/img/WMYB.png";
           }
+          else if(song.title === "Anti_Hero"){
+              imageUrl = "/img/AntiHero.png";
+          }
+            else if(song.title === "Pink Pony Club"){
+                imageUrl = "/img/Pink.png";
+                }
           return { ...song, imageUrl };
         });
 

@@ -25,7 +25,13 @@ const LatestSongSection = ({ username }) => {
 
         if (songData && songData.title === "What Makes You Beautiful") {
           setImgUrl("/img/WMYB.png");
-        } else {
+        } else if(songData && songData.title === "Anti_Hero"){
+            setImgUrl("/img/AntiHero.png");
+            }
+        else if(songData && songData.title === "Pink Pony Club"){
+            setImgUrl("/img/Pink.png");
+            }
+        else {
           setImgUrl(null);
         }
       } catch (error) {
